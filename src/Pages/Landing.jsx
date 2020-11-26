@@ -19,6 +19,21 @@ function Landing(props) {
     setLoading(false);
   }
 
+  function mark_rank(questionid, rank) {
+    let tempVar = JSON.parse(JSON.stringify(questionList));
+    console.log(rank);
+    let newlist = tempVar.questions.map((item, index) => {
+      if (questionid === item.id) {
+        item.selectedrank = rank;
+      }
+      return item;
+    });
+    tempVar.questions = newlist;
+    // console.log(tempVar);
+    setQuestionList(tempVar);
+    // console.log(questionList);
+  }
+
   function range(start, end) {
     return Array.from({ length: end - start + 1 }, (_, i) => i);
   }
@@ -51,7 +66,7 @@ function Landing(props) {
                               {item.question}
                               <div className="row">&nbsp;</div>
                               <p>
-                                <span class="text-danger">
+                                <span className="text-danger">
                                   <strong>Disagree</strong>
                                 </span>{" "}
                                 &nbsp; &nbsp;
@@ -60,14 +75,18 @@ function Landing(props) {
                                     <label className="form-check-label">
                                       <input
                                         type="radio"
+                                        value={num + 1}
                                         className="form-check-input"
                                         name={"optradio" + item.id}
+                                        onChange={(e) =>
+                                          mark_rank(item.id, e.target.value)
+                                        }
                                       />
                                     </label>
                                   </div>
                                 ))}
                                 &nbsp;{" "}
-                                <span class="text-success">
+                                <span className="text-success">
                                   <strong>Agree</strong>
                                 </span>
                               </p>
