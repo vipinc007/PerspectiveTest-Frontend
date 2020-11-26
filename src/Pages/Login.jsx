@@ -1,19 +1,22 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AuthManager from "../Common/AuthManager";
 import AppSettings from "../Settings/AppSettings";
 import Utils from "../Common/Utils";
+import ServiceWrapper from "../Services/ServiceWrapper";
 
 function Login(props) {
   const history = useHistory();
-  function handle_login() {
-    AuthManager.setAuthUser("testing");
-    history.push("/dashboard");
-    // let rto = "rto=" + Utils.get_current_root_url() + "callback/login";
-    // let redirect_url =
-    //   AppSettings.SAMS_SSO_URL + "?storename=DBPromoter Web App&m=get&" + rto;
-    // window.location.href = redirect_url;
+
+  async function loadLogList() {
+    var api_base_url = AppSettings.BACKEND_API_URL;
+    let ret = await ServiceWrapper.doGet(api_base_url + "users/list", {});
+    console.log(ret);
   }
+
+  useEffect(() => {
+    loadLogList();
+  }, []);
 
   return (
     <React.Fragment>
@@ -32,13 +35,6 @@ function Login(props) {
                 <br />
                 <br />
                 <br />
-                <button
-                  type="submit"
-                  className="btn btn-warning mx-auto w-50"
-                  onClick={() => handle_login()}
-                >
-                  <strong>Sign in</strong>
-                </button>
               </div>
             </div>
           </div>
