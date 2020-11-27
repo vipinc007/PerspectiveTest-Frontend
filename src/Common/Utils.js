@@ -1,17 +1,8 @@
-import AppSettings from "../Settings/AppSettings";
-
 class Utils {
   static isEmpty(value) {
     return (
       value === null || value === undefined || value.toString().trim() === ""
     );
-  }
-
-  static appendLeadingZeroes(n) {
-    if (n <= 9) {
-      return "0" + n;
-    }
-    return n;
   }
 
   static get_current_root_url() {
@@ -22,30 +13,6 @@ class Utils {
     return !isNaN(num);
   }
 
-  static get_environment(envid) {
-    let tempVar = JSON.parse(JSON.stringify(AppSettings.SERVER_ENVIRONMENTS));
-    let envitem = tempVar.filter((p) => p.id === envid);
-    if (envitem.length == 1) return envitem[0];
-    return null;
-  }
-  static get_environment_name(envid) {
-    let env = this.get_environment(envid);
-    if (env === null) return null;
-    return env.name;
-  }
-
-  static get_environment_btnClass(envid) {
-    let env = this.get_environment(envid);
-    if (env === null) return null;
-    return env.btnClass;
-  }
-
-  static get_environment_badgeClass(envid) {
-    let env = this.get_environment(envid);
-    if (env === null) return null;
-    return env.badgeClass;
-  }
-
   static async sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
@@ -54,17 +21,11 @@ class Utils {
     window.document.title = "DBPromoter : " + title;
   }
 
-  static enableFeatherPlugin() {
-    window["ProcessFeatherPlugins"]();
-    this.ProcessToolTips();
-  }
-
-  static OpenTheModal(id) {
-    window["OpenTheModal"](id);
-  }
-
-  static ProcessToolTips(id) {
-    window["ProcessToolTips"]();
+  static isValidEmail(email) {
+    // var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // // console.log(re.test(email));
+    // return re.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 }
 

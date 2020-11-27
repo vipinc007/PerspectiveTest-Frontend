@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import AuthManager from "../Common/AuthManager";
 import AppSettings from "../Settings/AppSettings";
 import Utils from "../Common/Utils";
 import ServiceWrapper from "../Services/ServiceWrapper";
@@ -9,17 +8,21 @@ function Landing(props) {
   const history = useHistory();
   var [questionList, setQuestionList] = React.useState([]);
   var [loading, setLoading] = React.useState(false);
+  var [validationError, setValidationError] = React.useState(false);
+  var [validationErrorMessage, setValidationErrorMessage] = React.useState(
+    null
+  );
 
   async function load_questions() {
     setLoading(true);
     var api_base_url = AppSettings.BACKEND_API_URL;
     let ret = await ServiceWrapper.doGet(api_base_url + "questions/list", {});
-    console.log(ret);
+    // console.log(ret);
     if (!ret.errorfound && ret.data.status) setQuestionList(ret.data.data);
     setLoading(false);
   }
 
-  function mark_rank(questionid, rank) {
+  function update_rank(questionid, rank) {
     let tempVar = JSON.parse(JSON.stringify(questionList));
     console.log(rank);
     let newlist = tempVar.questions.map((item, index) => {
@@ -32,6 +35,34 @@ function Landing(props) {
     // console.log(tempVar);
     setQuestionList(tempVar);
     // console.log(questionList);
+  }
+
+  function update_email(email) {
+    let tempVar = JSON.parse(JSON.stringify(questionList));
+
+    tempVar.email = email;
+    setQuestionList(tempVar);
+  }
+
+  function validate_form(email) {
+    setValidationError(false);
+    let tempVar = JSON.parse(JSON.stringify(questionList));
+
+    tempVar.questions.every((item) => {
+      if (Utils.isEmpty(item.selectedrank)) {
+        setValidationError(true);
+        setValidationErrorMessage("Please answer all questions");
+        return false;
+      }
+    });
+
+    if (Utils.isEmpty(tempVar.email)) {
+      setValidationError(true);
+      setValidationErrorMessage("Please enter email");
+    } else if (!Utils.isValidEmail(tempVar.email)) {
+      setValidationError(true);
+      setValidationErrorMessage("Please enter valid email");
+    }
   }
 
   function range(start, end) {
@@ -58,43 +89,42 @@ function Landing(props) {
               {questionList.questions !== undefined && !loading && (
                 <>
                   {questionList.questions.map((item) => (
-                    <>
-                      <div key={item.id} className="row">
-                        <div className="col-md-6 offset-md-3">
-                          <div className="card col d-flex d-table-cell align-center">
-                            <div className="card-body justify-content-center">
-                              {item.question}
-                              <div className="row">&nbsp;</div>
-                              <p>
-                                <span className="text-danger">
-                                  <strong>Disagree</strong>
-                                </span>{" "}
-                                &nbsp; &nbsp;
-                                {range(1, 7).map((num) => (
-                                  <div key={num} className="form-check-inline">
-                                    <label className="form-check-label">
-                                      <input
-                                        type="radio"
-                                        value={num + 1}
-                                        className="form-check-input"
-                                        name={"optradio" + item.id}
-                                        onChange={(e) =>
-                                          mark_rank(item.id, e.target.value)
-                                        }
-                                      />
-                                    </label>
-                                  </div>
-                                ))}
-                                &nbsp;{" "}
-                                <span className="text-success">
-                                  <strong>Agree</strong>
+                    <div key={item.id} className="row">
+                      <div className="col-md-6 offset-md-3">
+                        <div className="card col d-flex d-table-cell align-center">
+                          <div
+                            className="card-body justify-content-center"
+                            style={{ width: "100%", alignContent: "center" }}
+                          >
+                            {item.question}
+                            <div className="row">&nbsp;</div>
+                            <p>
+                              <span className="text-danger">
+                                <strong>Disagree</strong>
+                              </span>{" "}
+                              &nbsp; &nbsp;
+                              {range(1, 7).map((num) => (
+                                <span key={num} className="form-check-inline">
+                                  <input
+                                    type="radio"
+                                    value={num + 1}
+                                    className="form-check-input"
+                                    name={"optradio" + item.id}
+                                    onChange={(e) =>
+                                      update_rank(item.id, e.target.value)
+                                    }
+                                  />
                                 </span>
-                              </p>
-                            </div>
+                              ))}
+                              &nbsp;{" "}
+                              <span className="text-success">
+                                <strong>Agree</strong>
+                              </span>
+                            </p>
                           </div>
                         </div>
                       </div>
-                    </>
+                    </div>
                   ))}
                   <div className="row">
                     <div className="col-md-6 offset-md-3">
@@ -105,6 +135,7 @@ function Landing(props) {
                             type="text"
                             className="form-control form-control-sm border border-secondary float-right"
                             placeholder="you@example.com"
+                            onChange={(e) => update_email(e.target.value)}
                           />
                         </div>
                       </div>
@@ -118,6 +149,7 @@ function Landing(props) {
                           <button
                             type="button"
                             className="btn btn-primary btn-sm"
+                            onClick={() => validate_form()}
                           >
                             Save & Continue
                           </button>
@@ -125,6 +157,19 @@ function Landing(props) {
                       </div>
                     </div>
                   </div>
+                  {validationError && (
+                    <div className="row">
+                      <div className="col-md-6 offset-md-3">
+                        <div className="col d-flex d-table-cell align-center">
+                          <div className="card-body justify-content-center">
+                            <div className="alert alert-danger" role="alert">
+                              {validationErrorMessage}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </>
               )}
 

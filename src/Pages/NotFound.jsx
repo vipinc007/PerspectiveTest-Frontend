@@ -1,14 +1,6 @@
-import React, { Component } from "react";
-import { useHistory } from "react-router-dom";
-import AuthManager from "../Common/AuthManager";
+import React from "react";
 
-function NotFound(props) {
-  const history = useHistory();
-  function handle_login() {
-    AuthManager.setAuthUser("testing");
-    history.push("/dashboard");
-  }
-
+function NotFound() {
   return (
     <React.Fragment>
       <div className="container">
