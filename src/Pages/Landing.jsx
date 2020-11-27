@@ -47,21 +47,24 @@ function Landing(props) {
   function validate_form(email) {
     setValidationError(false);
     let tempVar = JSON.parse(JSON.stringify(questionList));
-
+    var hasFormError = false;
     tempVar.questions.every((item) => {
       if (Utils.isEmpty(item.selectedrank)) {
         setValidationError(true);
-        setValidationErrorMessage("Please answer all questions");
+        setValidationErrorMessage("Please answer every questions");
+        hasFormError = true;
         return false;
       }
     });
 
-    if (Utils.isEmpty(tempVar.email)) {
-      setValidationError(true);
-      setValidationErrorMessage("Please enter email");
-    } else if (!Utils.isValidEmail(tempVar.email)) {
-      setValidationError(true);
-      setValidationErrorMessage("Please enter valid email");
+    if (!hasFormError) {
+      if (Utils.isEmpty(tempVar.email)) {
+        setValidationError(true);
+        setValidationErrorMessage("Please enter email");
+      } else if (!Utils.isValidEmail(tempVar.email)) {
+        setValidationError(true);
+        setValidationErrorMessage("Please enter valid email");
+      }
     }
   }
 
