@@ -22,6 +22,22 @@ function Landing(props) {
     setLoading(false);
   }
 
+  async function save_survey_results() {
+    if (validate_form()) {
+      //setLoading(true);
+      var api_base_url = AppSettings.BACKEND_API_URL;
+      let ret = await ServiceWrapper.doPost(
+        api_base_url + "result/save",
+        questionList
+      );
+      console.log(ret);
+      if (!ret.errorfound && ret.data.status) {
+        history.push("/result/" + ret.data.data.userid);
+      }
+      //setLoading(false);
+    }
+  }
+
   function update_rank(questionid, rank) {
     let tempVar = JSON.parse(JSON.stringify(questionList));
     console.log(rank);
@@ -44,7 +60,7 @@ function Landing(props) {
     setQuestionList(tempVar);
   }
 
-  function validate_form(email) {
+  async function validate_form() {
     setValidationError(false);
     let tempVar = JSON.parse(JSON.stringify(questionList));
     var hasFormError = false;
@@ -69,9 +85,11 @@ function Landing(props) {
       }
     }
 
-    if (!hasFormError) {
-      history.push("/result/10");
-    }
+    return hasFormError;
+
+    // if (!hasFormError) {
+    //   history.push("/result/10");
+    // }
   }
 
   function range(start, end) {
@@ -158,7 +176,7 @@ function Landing(props) {
                           <button
                             type="button"
                             className="btn btn-primary btn-sm"
-                            onClick={() => validate_form()}
+                            onClick={() => save_survey_results()}
                           >
                             Save & Continue
                           </button>
