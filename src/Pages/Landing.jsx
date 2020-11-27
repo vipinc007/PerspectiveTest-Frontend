@@ -61,10 +61,16 @@ function Landing(props) {
       if (Utils.isEmpty(tempVar.email)) {
         setValidationError(true);
         setValidationErrorMessage("Please enter email");
+        hasFormError = true;
       } else if (!Utils.isValidEmail(tempVar.email)) {
         setValidationError(true);
         setValidationErrorMessage("Please enter valid email");
+        hasFormError = true;
       }
+    }
+
+    if (!hasFormError) {
+      history.push("/result/10");
     }
   }
 
