@@ -8,6 +8,7 @@ function Landing(props) {
   const history = useHistory();
   var [questionList, setQuestionList] = React.useState([]);
   var [loading, setLoading] = React.useState(false);
+  var [savinResults, setSavinResults] = React.useState(false);
   var [validationError, setValidationError] = React.useState(false);
   var [validationErrorMessage, setValidationErrorMessage] = React.useState(
     null
@@ -24,7 +25,7 @@ function Landing(props) {
 
   async function save_survey_results() {
     if (validate_form()) {
-      //setLoading(true);
+      setSavinResults(true);
       var api_base_url = AppSettings.BACKEND_API_URL;
       let ret = await ServiceWrapper.doPost(
         api_base_url + "result/save",
@@ -34,7 +35,7 @@ function Landing(props) {
       if (!ret.errorfound && ret.data.status) {
         history.push("/result/" + ret.data.data.userid);
       }
-      //setLoading(false);
+      setSavinResults(false);
     }
   }
 
@@ -191,6 +192,25 @@ function Landing(props) {
                           <div className="card-body justify-content-center">
                             <div className="alert alert-danger" role="alert">
                               {validationErrorMessage}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {savinResults && (
+                    <div className="row">
+                      <div className="col-md-6 offset-md-3">
+                        <div className="col d-flex d-table-cell align-center">
+                          <div className="card-body justify-content-center">
+                            <div className="alert alert-info" role="alert">
+                              <span
+                                className="spinner-grow spinner-grow-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>{" "}
+                              Saving Changes.
                             </div>
                           </div>
                         </div>

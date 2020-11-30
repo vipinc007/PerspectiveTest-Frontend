@@ -6,7 +6,6 @@ import ServiceWrapper from "../Services/ServiceWrapper";
 
 function Result(props) {
   const { params } = props.match;
-  const history = useHistory();
   var [surveyResult, setSurveyResult] = React.useState([]);
   var [loading, setLoading] = React.useState(false);
 
@@ -39,38 +38,75 @@ function Result(props) {
       <div className="container">
         <div className="row">&nbsp;</div>
         <div className="row">&nbsp;</div>
-        <div className="row">
-          <div className="col-sm-6 align-middle">
-            <h5>Your Perceptective</h5>
-            <p>Your Perspective Type is :</p>
+        {!loading && (
+          <div className="row">
+            <div className="col-sm-6 align-middle">
+              <h5>Your Perceptective</h5>
+              <p>
+                Your Perspective Type is :&nbsp;
+                {surveyResult.perspective !== undefined && !loading && (
+                  <strong>
+                    {surveyResult.perspective.map((item) => item.score)}
+                  </strong>
+                )}
+              </p>
+            </div>
+            <div className="col-sm-6">
+              {surveyResult.perspective !== undefined && !loading && (
+                <>
+                  <table className="table">
+                    {surveyResult.perspective.map((item) => (
+                      <tr>
+                        <td>{item.leftname}</td>
+                        <td>&nbsp;</td>
+                        <td>
+                          {item.leftchar == item.score && (
+                            <>
+                              <span className="badge badge-primary">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              </span>
+                              <span className="badge badge-light">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              </span>
+                            </>
+                          )}
+
+                          {item.rightchar == item.score && (
+                            <>
+                              <span className="badge badge-light">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              </span>
+                              <span className="badge badge-primary">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              </span>
+                            </>
+                          )}
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>{item.rightname}</td>
+                      </tr>
+                    ))}
+                  </table>
+                </>
+              )}
+            </div>
           </div>
-          <div className="col-sm-6">
-            {surveyResult.perspective !== undefined && !loading && (
-              <>
-                <table className="table">
-                  {surveyResult.perspective.map((item) => (
-                    <tr>
-                      <td>{item.leftname}</td>
-                      <td>&nbsp;</td>
-                      <td>
-                        <span className="badge badge-primary">
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        </span>
-                        <span className="badge badge-light">
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        </span>
-                      </td>
-                      <td>&nbsp;</td>
-                      <td>{item.rightname}</td>
-                    </tr>
-                  ))}
-                </table>
-              </>
-            )}
+        )}
+
+        {loading && (
+          <div className="alert alert-info" role="alert">
+            <span
+              className="spinner-grow spinner-grow-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>{" "}
+            Please wait, we are preparing your test results.
           </div>
-        </div>
+        )}
 
         {get_user_id() === null && (
           <div className="alert alert-danger" role="alert">
