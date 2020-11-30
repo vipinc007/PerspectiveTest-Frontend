@@ -181,6 +181,17 @@ function Landing(props) {
                           >
                             Save & Continue
                           </button>
+                          &nbsp;
+                          {savinResults && (
+                            <span className="alert alert-info" role="alert">
+                              <span
+                                className="spinner-grow spinner-grow-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>{" "}
+                              Saving Changes.
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -198,25 +209,6 @@ function Landing(props) {
                       </div>
                     </div>
                   )}
-
-                  {savinResults && (
-                    <div className="row">
-                      <div className="col-md-6 offset-md-3">
-                        <div className="col d-flex d-table-cell align-center">
-                          <div className="card-body justify-content-center">
-                            <div className="alert alert-info" role="alert">
-                              <span
-                                className="spinner-grow spinner-grow-sm"
-                                role="status"
-                                aria-hidden="true"
-                              ></span>{" "}
-                              Saving Changes.
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </>
               )}
 
@@ -225,52 +217,10 @@ function Landing(props) {
                   Loading questions
                 </div>
               )}
-              {/* <div className="row align-items-center mx-auto">
-                <img
-                  className="mx-auto"
-                  src={process.env.PUBLIC_URL + "/includes/images/logo1.png"}
-                  width={"400px"}
-                ></img>
-              </div>
-              <div className="row align-items-center mx-auto">
-                <br />
-                <br />
-                <br />
-              </div> */}
             </div>
           </div>
-          {/* <div className="col min-vh-100 d-table">
-            <div className="d-table-cell align-middle">
-              <button
-                type="submit"
-                className="btn btn-sm btn-warning align-middle"
-                onClick={() => handle_login()}
-              >
-                Sign in
-              </button>
-            </div>
-          </div> */}
         </div>
       </div>
-      {/* <div className="container">
-        <div className="row">
-          <div className="col min-vh-100 d-table">
-            <img
-              className="align-middle"
-              src={process.env.PUBLIC_URL + "/includes/images/logo.png"}
-            ></img>
-          </div>
-          <div className="col  min-vh-100 d-table">
-            <button
-              type="submit"
-              className="btn btn-sm btn-warning align-middle"
-              onClick={() => handle_login()}
-            >
-              Sign in
-            </button>
-          </div>
-        </div>
-      </div> */}
     </React.Fragment>
   );
 }

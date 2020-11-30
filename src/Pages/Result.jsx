@@ -104,7 +104,7 @@ function Result(props) {
               role="status"
               aria-hidden="true"
             ></span>{" "}
-            Please wait, we are preparing your test results.
+            Please wait, we are calculating your score....
           </div>
         )}
 
