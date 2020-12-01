@@ -55,41 +55,43 @@ function Result(props) {
               {surveyResult.perspective !== undefined && !loading && (
                 <>
                   <table className="table">
-                    {surveyResult.perspective.map((item) => (
-                      <tr>
-                        <td>{item.leftname}</td>
-                        <td>&nbsp;</td>
-                        <td>
-                          {item.leftchar == item.score && (
-                            <>
-                              <span className="badge badge-primary">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              </span>
-                              <span className="badge badge-light">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              </span>
-                            </>
-                          )}
+                    <tbody>
+                      {surveyResult.perspective.map((item) => (
+                        <tr key={item.pid}>
+                          <td>{item.leftname}</td>
+                          <td>&nbsp;</td>
+                          <td>
+                            {item.leftchar == item.score && (
+                              <>
+                                <span className="badge badge-primary">
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </span>
+                                <span className="badge badge-light">
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </span>
+                              </>
+                            )}
 
-                          {item.rightchar == item.score && (
-                            <>
-                              <span className="badge badge-light">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              </span>
-                              <span className="badge badge-primary">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              </span>
-                            </>
-                          )}
-                        </td>
-                        <td>&nbsp;</td>
-                        <td>{item.rightname}</td>
-                      </tr>
-                    ))}
+                            {item.rightchar == item.score && (
+                              <>
+                                <span className="badge badge-light">
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </span>
+                                <span className="badge badge-primary">
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </span>
+                              </>
+                            )}
+                          </td>
+                          <td>&nbsp;</td>
+                          <td>{item.rightname}</td>
+                        </tr>
+                      ))}
+                    </tbody>
                   </table>
                 </>
               )}

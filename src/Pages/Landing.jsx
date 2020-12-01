@@ -24,7 +24,7 @@ function Landing(props) {
   }
 
   async function save_survey_results() {
-    if (validate_form()) {
+    if (!validate_form()) {
       setSavinResults(true);
       var api_base_url = AppSettings.BACKEND_API_URL;
       let ret = await ServiceWrapper.doPost(
@@ -41,7 +41,6 @@ function Landing(props) {
 
   function update_rank(questionid, rank) {
     let tempVar = JSON.parse(JSON.stringify(questionList));
-    console.log(rank);
     let newlist = tempVar.questions.map((item, index) => {
       if (questionid === item.id) {
         item.selectedrank = rank;
@@ -61,7 +60,7 @@ function Landing(props) {
     setQuestionList(tempVar);
   }
 
-  async function validate_form() {
+  function validate_form() {
     setValidationError(false);
     let tempVar = JSON.parse(JSON.stringify(questionList));
     var hasFormError = false;
