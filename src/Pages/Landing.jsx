@@ -67,7 +67,7 @@ function Landing(props) {
     tempVar.questions.every((item) => {
       if (Utils.isEmpty(item.selectedrank)) {
         setValidationError(true);
-        setValidationErrorMessage("Please answer every questions");
+        setValidationErrorMessage("Please answer every question(s).");
         hasFormError = true;
         return false;
       }
@@ -76,11 +76,11 @@ function Landing(props) {
     if (!hasFormError) {
       if (Utils.isEmpty(tempVar.email)) {
         setValidationError(true);
-        setValidationErrorMessage("Please enter email");
+        setValidationErrorMessage("Please enter an email.");
         hasFormError = true;
       } else if (!Utils.isValidEmail(tempVar.email)) {
         setValidationError(true);
-        setValidationErrorMessage("Please enter valid email");
+        setValidationErrorMessage("Please enter a valid email");
         hasFormError = true;
       }
     }
